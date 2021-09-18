@@ -1,7 +1,7 @@
 import User from "../models/User";
 
 class UserController {
-  // Post
+  // Post: Creates user in database
   async store(req, res) {
     try {
       const newUser = await User.create(req.body);
@@ -15,9 +15,10 @@ class UserController {
     }
   }
 
-  // Index
+  // Index: List all users in database
   async index(req, res) {
     try {
+      // Finds all users in database
       const users = await User.findAll();
       return res.json(users);
     } catch (error) {
@@ -25,9 +26,10 @@ class UserController {
     }
   }
 
-  // Show
+  // Show: Lists a single user in database
   async show(req, res) {
     try {
+      // Find a single user by id
       const user = await User.findByPk(req.params.id);
       return res.json(user);
     } catch (error) {
@@ -39,15 +41,17 @@ class UserController {
     }
   }
 
-  // Update
+  // Update: Check user avaiability and updates their information
   async update(req, res) {
     try {
+      // Check if request params id exists
       if (!req.params.id) {
         return res.status(400).json({
           errors: ["Missing User ID."],
         });
       }
 
+      // Find a single user by id
       const user = await User.findByPk(req.params.id);
       if (!user) {
         return res.status(400).json({
@@ -55,6 +59,7 @@ class UserController {
         });
       }
 
+      // Updates user data
       const newData = await user.update(req.body);
 
       return res.json(newData);
@@ -67,15 +72,17 @@ class UserController {
     }
   }
 
-  // Delete
+  // Delete: checks user avaiability and deletes them from database
   async delete(req, res) {
     try {
+      // Check if request params id exists
       if (!req.params.id) {
         return res.status(400).json({
           errors: ["Missing User ID."],
         });
       }
 
+      // Find a single user by id
       const user = await User.findByPk(req.params.id);
       if (!user) {
         return res.status(400).json({
@@ -83,6 +90,7 @@ class UserController {
         });
       }
 
+      // Deletes user entry in database
       await user.destroy();
 
       return res.json(user);

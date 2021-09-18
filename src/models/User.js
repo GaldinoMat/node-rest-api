@@ -3,6 +3,7 @@ import Sequelize, { Model } from "sequelize";
 
 export default class User extends Model {
   static init(sequelize) {
+    // Sets data model structure
     super.init(
       {
         name: {
@@ -37,6 +38,7 @@ export default class User extends Model {
       { sequelize }
     );
 
+    // Encrypts user password transforming it into a hash
     this.addHook("beforeSave", async (user) => {
       if (user.password) {
         user.password_hash = await bcryptjs.hash(user.password, 8);
@@ -44,5 +46,10 @@ export default class User extends Model {
     });
 
     return this;
+  }
+
+  // Check if given password and stored password_hash are similar
+  passwordIsValid(password) {
+    return bcryptjs.compare(password, this.password_hash);
   }
 }

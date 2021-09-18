@@ -2,6 +2,7 @@ import Sequelize, { Model } from "sequelize";
 
 export default class Student extends Model {
   static init(sequelize) {
+    // Sets data model structure
     super.init(
       {
         name: Sequelize.STRING,
@@ -11,7 +12,7 @@ export default class Student extends Model {
         weight: Sequelize.FLOAT,
         height: Sequelize.FLOAT,
       },
-      { sequelize },
+      { sequelize }
     );
     return this;
   }

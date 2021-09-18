@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express from "express";
 import home from "./src/routes/home";
 import user from "./src/routes/user";
+import token from "./src/routes/token";
 import "./src/database";
 
 dotenv.config();
@@ -13,14 +14,17 @@ class App {
     this.routes();
   }
 
+  // Middleares used
   middlewares() {
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(express.json());
   }
 
+  // Routes used for navigation
   routes() {
     this.app.use("/", home);
     this.app.use("/users/", user);
+    this.app.use("/tokens/", token);
   }
 }
 
