@@ -1,6 +1,6 @@
 import Student from "../models/Student";
 
-class Home {
+class HomeController {
   async index(req, res) {
     const newStudent = await Student.create({
       name: "Mateus",
@@ -14,4 +14,4 @@ class Home {
   }
 }
 
-export default new Home();
+export default new HomeController();
