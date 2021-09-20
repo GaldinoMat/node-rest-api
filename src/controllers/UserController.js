@@ -5,7 +5,10 @@ class UserController {
   async store(req, res) {
     try {
       const newUser = await User.create(req.body);
-      return res.json(newUser);
+
+      const { id, name, email } = newUser;
+
+      return res.json({ id, name, email });
     } catch (error) {
       return res.status(400).json({
         errors: error.errors
@@ -19,7 +22,7 @@ class UserController {
   async index(req, res) {
     try {
       // Finds all users in database
-      const users = await User.findAll();
+      const users = await User.findAll({ attributes: ["id", "name", "email"] });
       return res.json(users);
     } catch (error) {
       return res.json(null);
@@ -31,7 +34,9 @@ class UserController {
     try {
       // Find a single user by id
       const user = await User.findByPk(req.params.id);
-      return res.json(user);
+
+      const { id, name, email } = user;
+      return res.json({ id, name, email });
     } catch (error) {
       return res.status(400).json({
         errors: error.errors
@@ -44,15 +49,8 @@ class UserController {
   // Update: Check user avaiability and updates their information
   async update(req, res) {
     try {
-      // Check if request params id exists
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ["Missing User ID."],
-        });
-      }
-
       // Find a single user by id
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.userId);
       if (!user) {
         return res.status(400).json({
           errors: ["User does not exist."],
@@ -62,7 +60,9 @@ class UserController {
       // Updates user data
       const newData = await user.update(req.body);
 
-      return res.json(newData);
+      const { id, name, email } = newData;
+
+      return res.json({ id, name, email });
     } catch (error) {
       return res.status(400).json({
         errors: error.errors
@@ -75,15 +75,8 @@ class UserController {
   // Delete: checks user avaiability and deletes them from database
   async delete(req, res) {
     try {
-      // Check if request params id exists
-      if (!req.params.id) {
-        return res.status(400).json({
-          errors: ["Missing User ID."],
-        });
-      }
-
       // Find a single user by id
-      const user = await User.findByPk(req.params.id);
+      const user = await User.findByPk(req.userId);
       if (!user) {
         return res.status(400).json({
           errors: ["User does not exist."],
@@ -93,7 +86,7 @@ class UserController {
       // Deletes user entry in database
       await user.destroy();
 
-      return res.json(user);
+      return res.json(`User ${user.name} was deleted`);
     } catch (error) {
       return res.status(400).json({
         errors: error.errors
