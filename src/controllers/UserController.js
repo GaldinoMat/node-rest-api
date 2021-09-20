@@ -86,7 +86,7 @@ class UserController {
       // Deletes user entry in database
       await user.destroy();
 
-      return res.json(`User ${user.name} was deleted`);
+      return res.json(`User ${user.name} was deleted form database`);
     } catch (error) {
       return res.status(400).json({
         errors: error.errors
