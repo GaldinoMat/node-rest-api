@@ -3,6 +3,7 @@ import express from "express";
 import home from "./src/routes/home";
 import user from "./src/routes/user";
 import token from "./src/routes/token";
+import student from "./src/routes/student";
 import "./src/database";
 
 dotenv.config();
@@ -25,6 +26,7 @@ class App {
     this.app.use("/", home);
     this.app.use("/users/", user);
     this.app.use("/tokens/", token);
+    this.app.use("/students/", student);
   }
 }
 
