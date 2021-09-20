@@ -8,7 +8,7 @@ const router = new Router();
 // Sets route http actions
 
 // These routes shouldn't exist, use for tests only
-// router.get("/", UserController.index);
+router.get("/", UserController.index);
 // router.get("/:id", UserController.show);
 
 router.post("/", UserController.store);
