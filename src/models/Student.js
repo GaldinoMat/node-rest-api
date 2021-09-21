@@ -29,7 +29,7 @@ export default class Student extends Model {
           type: Sequelize.STRING,
           defaultValue: "",
           unique: {
-            msg: "E-mail already exists"
+            msg: "E-mail already exists",
           },
           validate: {
             isEmail: {
@@ -68,5 +68,9 @@ export default class Student extends Model {
       { sequelize }
     );
     return this;
+  }
+
+  static associate(models) {
+    this.hasMany(models.Photo, { foreignKey: "student_id" });
   }
 }

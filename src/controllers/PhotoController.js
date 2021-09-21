@@ -8,13 +8,13 @@ class PhotoController {
   // Photo base function
   store(req, res) {
     return upload(req, res, async (err) => {
-      try {
-        if (err) {
-          return res.status(400).json({
-            errors: [err.code],
-          });
-        }
+      if (err) {
+        return res.status(400).json({
+          errors: [err.code],
+        });
+      }
 
+      try {
         const { originalname, filename } = req.file;
         const { student_id } = req.body;
         const photo = await Photo.create({
@@ -23,12 +23,10 @@ class PhotoController {
           student_id,
         });
 
-        console.log(photo);
-
         return res.json(photo);
       } catch (error) {
         return res.status(400).json({
-          errors: error,
+          errors: ["Error 400 - Student does not exist"],
         });
       }
     });

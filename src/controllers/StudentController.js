@@ -1,9 +1,20 @@
 import Student from "../models/Student";
+import Photo from "../models/Photo";
 
 class StudentController {
   // Function to list all students in database
   async index(req, res) {
-    const students = await Student.findAll();
+    const students = await Student.findAll({
+      attributes: ["id", "name", "surname", "email", "age", "weight", "height"],
+      order: [
+        ["id", "DESC"],
+        [Photo, "id", "DESC"],
+      ],
+      include: {
+        model: Photo,
+        attributes: ["filename"],
+      },
+    });
     res.json(students);
   }
 
@@ -33,7 +44,25 @@ class StudentController {
         });
       }
 
-      const student = await Student.findByPk(id);
+      const student = await Student.findByPk(id, {
+        attributes: [
+          "id",
+          "name",
+          "surname",
+          "email",
+          "age",
+          "weight",
+          "height",
+        ],
+        order: [
+          ["id", "DESC"],
+          [Photo, "id", "DESC"],
+        ],
+        include: {
+          model: Photo,
+          attributes: ["filename"],
+        },
+      });
 
       if (!student) {
         return res.status(400).json({
@@ -41,14 +70,7 @@ class StudentController {
         });
       }
 
-      const { name, surname, age } = student;
-
-      return res.json({
-        id,
-        name,
-        surname,
-        age,
-      });
+      return res.json(student);
     } catch (error) {
       return res.status(400).json({
         errors: ["Error 400 - Bad Request"],
